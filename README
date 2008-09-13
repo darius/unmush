@@ -1,0 +1,17 @@
+Included here are:
+
+1. A program and dictionary to split tagsruntogether into separate
+words.
+
+2. A randomly-sampled set of such tags manually split to evaluate the
+program against. This is further split into a 400-tag set for
+development and a 600-tag set for evaluation; that is, I've been using
+the 400-tag set to see how useful any changes to the code seem to be,
+and saving the 600-tag set for when this project is finished, to guard
+against overfitting to the development set.
+
+3. Scaffolding code to pick the random samples and to time/evaluate
+the program against a reference set.
+
+4. An analysis of the result from (3), picking out the reference tags
+where the program could reasonably do better.
