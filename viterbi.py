@@ -1,24 +1,9 @@
 import re
 
-def normalize(word):
-    "Put word in standard form to avoid trivial mismatches."
-    return re.sub(r'[^a-z]+', '', word.lower())
-
-def read_dictionary(file):
-    "Return a map from words to their costs."
-    costs = {}
-    for line in file:
-        coststr, word = line.split()
-        word = normalize(word)
-        # TODO: compute combined cost, not min
-        costs[word] = min(float(coststr), costs.get(word, 1000.0))
-    return costs
-
-dictionary = read_dictionary(open('freqlist.txt'))
-max_word_length = max(len(w) for w in dictionary)
-
 def try_to_split(wordsruntogether):
-    sequence, score = viterbi_segment(wordsruntogether.lower())
+    """Return a list of just one segmentation.
+    A segmentation satisfies ''.join(segmentation) == wordsruntogether."""
+    sequence, cost = viterbi_segment(wordsruntogether.lower())
     return [sequence]
 
 def viterbi_segment(text):
@@ -42,6 +27,11 @@ def viterbi_segment(text):
     sequence.reverse()
     return sequence, costs[-1]
 
+
+# The unigram cost model.
+# Cost for known words is proportional to -log(word_frequency).
+# For others, we try to stay roughly consistent.
+
 def compute_wordcost(word):
     try:
         return dictionary[word]
@@ -53,3 +43,24 @@ def compute_wordcost(word):
         else:
             # TODO: use n-gram frequencies
             return 10 + 2.4 * len(word)
+
+
+## The dictionary
+
+def read_dictionary(file):
+    "Return a map from words to their costs."
+    costs = {}
+    for line in file:
+        coststr, word = line.split()
+        word = normalize(word)
+        # TODO: compute combined cost, not min
+        costs[word] = min(float(coststr), costs.get(word, 1000.0))
+    return costs
+
+def normalize(word):
+    "Put word in standard form to avoid trivial mismatches."
+    return re.sub(r'[^a-z]+', '', word.lower())
+
+dictionary = read_dictionary(open('freqlist.txt'))
+max_word_length = max(len(w) for w in dictionary)
+
