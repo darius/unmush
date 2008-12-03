@@ -20,10 +20,6 @@ def read_dictionary(file):
 
 dictionary = read_dictionary(open('freqlist.txt'))
 
-def normalize(word):
-    "Put word in standard form to avoid trivial mismatches."
-    return word.lower()         # TODO: strip punctuation
-
 call_count = 0
 
 def try_to_split(wordsruntogether, limit=5):
