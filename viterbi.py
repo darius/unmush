@@ -1,8 +1,9 @@
 import re
 
 def try_to_split(wordsruntogether):
-    """Return a list of just one segmentation.
-    A segmentation satisfies ''.join(segmentation) == wordsruntogether."""
+    """Return a list of just one segmentation. A segmentation is a
+    list of words that could have been smushed to make
+    wordsruntogether."""
     sequence, cost = viterbi_segment(wordsruntogether.lower())
     return [sequence]
 
@@ -62,5 +63,4 @@ def normalize(word):
     return re.sub(r'[^a-z]+', '', word.lower())
 
 dictionary = read_dictionary(open('freqlist.txt'))
-max_word_length = max(len(w) for w in dictionary)
-
+max_word_length = max(map(len, dictionary))
