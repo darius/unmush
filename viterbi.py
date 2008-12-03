@@ -14,7 +14,7 @@ def read_dictionary(file):
         costs[word] = min(float(coststr), costs.get(word, 1000.0))
     return costs
 
-dictionary = read_dictionary(open('freqlist2.txt'))
+dictionary = read_dictionary(open('freqlist.txt'))
 max_word_length = max(len(w) for w in dictionary)
 
 def try_to_split(wordsruntogether):
