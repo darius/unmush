@@ -22,29 +22,25 @@ def try_to_split(wordsruntogether):
     return [sequence]
 
 def viterbi_segment(text):
-    "Find the best segmentation of the string of characters."
+    "Return the best segmentation of the text, and its cost."
     # Adapted from Russell & Norvig, AIMA.
-    # best[i] = best cost for text[0:i]
+    # costs[i] = best cost for text[0:i]
     # words[i] = best word ending at position i
-    n = len(text)
-    words = [''] + list(text)
-    best = [0.0] + [1.e3] * n
-    ## Fill in the vectors best, words via dynamic programming
-    for i in range(n + 1):
-        for j in range(max(0, i - max_word_length), i):
-            w = text[j:i]
-            cost = compute_wordcost(w)
-            if cost + best[i - len(w)] <= best[i]:
-                best[i] = cost + best[i - len(w)]
-                words[i] = w
-    ## Now recover the sequence of best words
-    sequence = []; i = n
+    costs, words = [0.0], ['']
+    # Fill in costs and words via dynamic programming.
+    for i in range(1, len(text) + 1):
+        cost, word = min((costs[j] + compute_wordcost(text[j:i]), text[j:i])
+                         for j in range(max(0, i - max_word_length), i))
+        costs.append(cost)
+        words.append(word)
+    # Trace back the lowest-cost sequence of words.
+    sequence = []
+    i = len(text)
     while 0 < i:
         sequence.append(words[i])
         i -= len(words[i])
     sequence.reverse()
-    ## Return best word-sequence and its cost
-    return sequence, best[-1]
+    return sequence, costs[-1]
 
 def compute_wordcost(word):
     try:
