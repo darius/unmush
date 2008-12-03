@@ -1,4 +1,5 @@
-import dynasplit8 as splitter
+#import dynasplit8 as splitter
+import viterbi as splitter
 
 import sys
 import time
