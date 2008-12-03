@@ -1,3 +1,17 @@
+10.0     geo
+10.0     lat
+10.0     lon
+11.0     aint
+10.0     dont
+10.0     didnt
+10.0     doesnt
+10.0     isnt
+10.0     nyc
+10.0     topv
+12.0    st
+12.0    shes
+12.0    dc
+12.0    hes
 7.8     blog
 8.5     blogs
 7.0     interestingness
