@@ -1,4 +1,3 @@
-import dynasplit8 as splitter
 import viterbi as splitter
 
 import sys
