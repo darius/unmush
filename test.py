@@ -15,8 +15,8 @@ resultsfile = open('%s.%s.out' % (stem, splitter.__name__), 'w')
 start = time.time()
 results = []
 for tag in source:
-    splits = splitter.try_to_split(tag)
-    result = ' '.join(splits[0])
+    split = splitter.try_to_split(tag)
+    result = ' '.join(split)
     resultsfile.write(result + '\n')
     results.append(result)
 end = time.time()

@@ -1,32 +1,30 @@
 import re
 
 def try_to_split(wordsruntogether):
-    """Return a list of just one segmentation. A segmentation is a
-    list of words that could have been smushed to make
+    """Return a list of words that could have been smushed to make
     wordsruntogether."""
-    sequence, cost = viterbi_segment(wordsruntogether.lower())
-    return [sequence]
+    words, cost = viterbi_segment(wordsruntogether.lower())
+    return words
 
 def viterbi_segment(text):
-    "Return the best segmentation of the text, and its cost."
+    "Return the lowest-cost segmentation of the text, and its cost."
     # Adapted from Russell & Norvig, AIMA.
-    # cost[i] = cost of best segmentation of text[:i]
-    # start[i] = index of start of best word ending at i
-    # Fill them in by dynamic programming:
-    cost, start = [0.0], [0]
+    # The best segmentation of text[:i] will have cost cost[i] and
+    # last word text[word[i]:i]. Fill them in by dynamic programming:
+    cost, word = [0.0], [0]
     for i in range(1, len(text) + 1):
-        c, s = min((cost[j] + word_cost(text[j:i]), j)
-                   for j in range(max(0, i - max_word_length), i))
-        cost.append(c)
-        start.append(s)
-    # Trace back the lowest-cost sequence of words:
-    sequence = []
+        cost_k, k = min((cost[j] + word_cost(text[j:i]), j)
+                        for j in range(max(0, i - max_word_length), i))
+        cost.append(cost_k)
+        word.append(k)
+    # Trace back the words of the best segmentation:
+    words = []
     i = len(text)
     while 0 < i:
-        sequence.append(text[start[i]:i])
-        i = start[i]
-    sequence.reverse()
-    return sequence, cost[-1]
+        words.append(text[word[i]:i])
+        i = word[i]
+    words.reverse()
+    return words, cost[-1]
 
 
 # The unigram cost model.
