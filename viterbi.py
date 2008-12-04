@@ -10,30 +10,30 @@ def try_to_split(wordsruntogether):
 def viterbi_segment(text):
     "Return the best segmentation of the text, and its cost."
     # Adapted from Russell & Norvig, AIMA.
-    # costs[i] = best cost for text[0:i]
-    # words[i] = best word ending at position i
-    costs, words = [0.0], ['']
-    # Fill in costs and words via dynamic programming.
+    # cost[i] = cost of best segmentation of text[:i]
+    # start[i] = index of start of best word ending at i
+    # Fill them in by dynamic programming:
+    cost, start = [0.0], [0]
     for i in range(1, len(text) + 1):
-        cost, word = min((costs[j] + compute_wordcost(text[j:i]), text[j:i])
-                         for j in range(max(0, i - max_word_length), i))
-        costs.append(cost)
-        words.append(word)
-    # Trace back the lowest-cost sequence of words.
+        c, s = min((cost[j] + word_cost(text[j:i]), j)
+                   for j in range(max(0, i - max_word_length), i))
+        cost.append(c)
+        start.append(s)
+    # Trace back the lowest-cost sequence of words:
     sequence = []
-    i = len(words) - 1
+    i = len(start) - 1
     while 0 < i:
-        sequence.append(words[i])
-        i -= len(words[i])
+        sequence.append(text[start[i]:i])
+        i = start[i]
     sequence.reverse()
-    return sequence, costs[-1]
+    return sequence, cost[-1]
 
 
 # The unigram cost model.
 # Cost for known words is proportional to -log(word_frequency).
 # For others, we try to stay roughly consistent.
 
-def compute_wordcost(word):
+def word_cost(word):
     try:
         return dictionary[word]
     except KeyError:
