@@ -21,7 +21,7 @@ def viterbi_segment(text):
         start.append(s)
     # Trace back the lowest-cost sequence of words:
     sequence = []
-    i = len(start) - 1
+    i = len(text)
     while 0 < i:
         sequence.append(text[start[i]:i])
         i = start[i]
